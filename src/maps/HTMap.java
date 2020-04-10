@@ -135,5 +135,6 @@ public class HTMap<K, V> implements MyMap<K, V> {
     @Override
     public void clear() {
         buckets = (MapEntry<K, V>[]) new MapEntry[initialSize];
+        size = 0;
     }
 }

@@ -18,6 +18,7 @@ class HTMapTest {
     @Order(1)
     void putTest() {
         assertEquals(0, map.size());
+        assertTrue(map.isEmpty());
         for (int i = 0; i < 100; i++) {
             map.put(i, -i);
         }
@@ -42,48 +43,29 @@ class HTMapTest {
         for (int i = 0; i < 100; i++) {
             assertFalse(map.contains(i));
         }
+        assertTrue(map.isEmpty());
     }
 
     @Test
+    @Order(4)
     public void functionalityTest() {
         MyMap<String, String> dictionary = new HTMap<>();
         assertEquals(0, dictionary.size());
-
-        // can put objects in dictionary and get them
         dictionary.put("hello", "world");
-        assertTrue(dictionary.contains("hello"));
-        assertEquals("world", dictionary.get("hello"));
-        assertEquals(1, dictionary.size());
-
-        // putting with existing key updates the value
         dictionary.put("hello", "kevin");
         assertEquals(1, dictionary.size());
         assertEquals("kevin", dictionary.get("hello"));
-
-        // putting key in multiple times does not affect behavior
-        MyMap<String, Integer> studentIDs = new HTMap<>();
-        studentIDs.put("sarah", 12345);
-        assertEquals(1, studentIDs.size());
-        assertEquals(12345, studentIDs.get("sarah").intValue());
-        studentIDs.put("alan", 345);
-        assertEquals(2, studentIDs.size());
-        assertEquals(12345, studentIDs.get("sarah").intValue());
-        assertEquals(345, studentIDs.get("alan").intValue());
-        studentIDs.put("alan", 345);
-        assertEquals(2, studentIDs.size());
-        assertEquals(12345, studentIDs.get("sarah").intValue());
-        assertEquals(345, studentIDs.get("alan").intValue());
-        studentIDs.put("alan", 345);
-        assertEquals(2, studentIDs.size());
-        assertEquals(12345, studentIDs.get("sarah").intValue());
-        assertEquals(345, studentIDs.get("alan").intValue());
-        assertTrue(studentIDs.contains("sarah"));
-        assertTrue(studentIDs.contains("alan"));
-
-        // handle values being the same
-        assertEquals(345, studentIDs.get("alan").intValue());
-        studentIDs.put("evil alan", 345);
-        assertEquals(345, studentIDs.get("evil alan").intValue());
-        assertEquals(studentIDs.get("evil alan"), studentIDs.get("alan"));
+        MyMap<String, Integer> names = new HTMap<>();
+        names.put("alan", 345);
+        names.put("alan", 345);
+        assertEquals(1, names.size());
+        assertEquals(345, names.get("alan"));
+        names.put("alan", 345);
+        assertEquals(1, names.size());
+        assertEquals(345, names.get("alan"));
+        assertEquals(345, names.get("alan"));
+        names.put("evil alan", 345);
+        assertEquals(345, names.get("evil alan"));
+        assertEquals(names.get("evil alan"), names.get("alan"));
     }
 }
